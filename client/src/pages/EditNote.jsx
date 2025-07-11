@@ -57,7 +57,7 @@ export default function EditNote(){
     return(
         <div>
             <Nav/>
-            <div className="flex flex-wrap justify-center mt-15">
+            <div className="flex flex-wrap justify-center mt-4">
             <div className="w-100 bg-gradient-to-br from-yellow-400 to-pink-600 text-center mt-8 text-white rounded">
                 <p className="text-5xl font-extrabold my-4">Edit Note</p>
             <Box component="form" onSubmit={handleSubmit}
