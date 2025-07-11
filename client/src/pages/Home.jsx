@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useEffect } from "react";
 export default function Home(){
     let [notes,setNotes]=useState([]);
+    let [searchNote,setSearchNote]=useState("");
 
     const fetchData=async()=>{
         const res=await axios.get("http://localhost:8080");
@@ -20,12 +21,21 @@ export default function Home(){
         fetchData();
     }
 
+    const filterNotes=searchNote.trim()? notes.filter((note)=>{
+        const q=searchNote.toLowerCase();
+        return(
+            note.title.toLowerCase().includes(q) ||
+            note.content.toLowerCase().includes(q) ||
+            note.category.toLowerCase().includes(q)
+        );
+    }):notes;
+
     return(
         <div>
-            <Nav ifAdd={1}/>
+            <Nav ifAdd={1} toDisplay={1} setSearchNote={setSearchNote} searchNote={searchNote}/>
             <div className="grid grid-cols-4 mt-2">
-                {
-                    notes.map((note)=>(
+                {   filterNotes.length>0?(
+                    filterNotes.map((note)=>(
                         <NoteCard
                         key={note._id}
                         title={note.title}
@@ -36,7 +46,9 @@ export default function Home(){
                         handleDelete={()=>deleteNote(note._id)}
                         />
                     ))
-                }
+                ):(
+          <div className="text-gray-500 mt-4">No notes found.</div>
+        )};
                 
             </div>
         </div>
